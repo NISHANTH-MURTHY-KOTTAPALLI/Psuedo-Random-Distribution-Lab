@@ -1,58 +1,52 @@
 /* styles.css */
-
-/* =========
-   THEME TOKENS
-   ========= */
 :root {
   --font-sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
 
-  /* defaults (dire) */
+  /* Dire default */
   --bg: #0b0f14;
-  --bg2: #0a0d12;
+  --bg2: #070a0d;
   --grid: rgba(255,255,255,0.06);
 
-  --card: rgba(17, 22, 30, 0.78);
-  --card2: rgba(14, 18, 25, 0.85);
+  --card: rgba(16, 20, 26, 0.82);
+  --card2: rgba(12, 16, 22, 0.92);
   --border: rgba(255,255,255,0.10);
 
   --text: rgba(255,255,255,0.92);
-  --muted: rgba(255,255,255,0.62);
+  --muted: rgba(255,255,255,0.64);
 
-  --accent: #b74b4b;      /* Dire red */
-  --accent2: #e26b6b;
+  --accent: #b34a43;   /* ember red */
+  --accent2: #e3736b;  /* warm highlight */
   --good: #77d38b;
 
-  --shadow: 0 14px 38px rgba(0,0,0,0.35);
+  --shadow: 0 16px 44px rgba(0,0,0,0.40);
 }
 
 html[data-theme="radiant"] {
-  --bg: #f4f7f2;
-  --bg2: #eaf1e5;
-  --grid: rgba(20,40,20,0.06);
+  /* Radiant: stone + parchment + nature */
+  --bg: #f3f6ef;
+  --bg2: #e8efe1;
+  --grid: rgba(18, 30, 18, 0.06);
 
   --card: rgba(255,255,255,0.88);
-  --card2: rgba(255,255,255,0.95);
-  --border: rgba(10,20,10,0.14);
+  --card2: rgba(255,255,255,0.96);
+  --border: rgba(12, 20, 12, 0.14);
 
-  --text: rgba(16,22,16,0.92);
-  --muted: rgba(16,22,16,0.62);
+  --text: rgba(14, 20, 14, 0.92);
+  --muted: rgba(14, 20, 14, 0.62);
 
-  --accent: #3a8b4f;      /* Radiant green */
-  --accent2: #54b06b;
-  --good: #2f7e46;
+  --accent: #2f7c46;   /* radiant green */
+  --accent2: #4aa864;  /* leaf highlight */
+  --good: #2f7c46;
 
-  --shadow: 0 12px 30px rgba(18,40,18,0.15);
+  --shadow: 0 14px 34px rgba(16, 28, 16, 0.16);
 }
 
-/* =========
-   BASE
-   ========= */
 .prd-body {
   font-family: var(--font-sans);
   background:
-    radial-gradient(1000px 500px at 20% 0%, color-mix(in srgb, var(--accent) 18%, transparent), transparent 60%),
-    radial-gradient(900px 480px at 90% 15%, color-mix(in srgb, var(--accent2) 14%, transparent), transparent 65%),
+    radial-gradient(1000px 520px at 15% 0%, color-mix(in srgb, var(--accent2) 20%, transparent), transparent 62%),
+    radial-gradient(900px 520px at 90% 15%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 68%),
     linear-gradient(180deg, var(--bg), var(--bg2));
   color: var(--text);
   min-height: 100vh;
@@ -66,50 +60,82 @@ html[data-theme="radiant"] {
   background-image:
     linear-gradient(var(--grid) 1px, transparent 1px),
     linear-gradient(90deg, var(--grid) 1px, transparent 1px);
-  background-size: 56px 56px;
-  opacity: 0.7;
+  background-size: 60px 60px;
+  opacity: 0.72;
 }
 
 .muted { color: var(--muted) !important; }
-.mono  { font-family: var(--font-mono); }
+.mono { font-family: var(--font-mono); }
 
-/* =========
-   NAV / HEADER
-   ========= */
 .navlink {
   text-decoration: none;
   color: var(--muted);
   border-bottom: 2px solid transparent;
   padding-bottom: 4px;
+  font-weight: 600;
 }
 .navlink:hover { color: var(--text); }
 .navlink.active { color: var(--text); border-bottom-color: var(--accent); }
 
 .prd-title {
-  font-weight: 760;
+  font-weight: 860;
   letter-spacing: 0.2px;
   line-height: 1.05;
   margin: 0;
-  color: color-mix(in srgb, var(--accent2) 70%, var(--text));
-  text-shadow: 0 0 24px color-mix(in srgb, var(--accent) 22%, transparent);
+  color: color-mix(in srgb, var(--accent2) 72%, var(--text));
+  text-shadow: 0 0 22px color-mix(in srgb, var(--accent) 20%, transparent);
 }
 
-.prd-subtitle {
+.prd-subtitle { color: var(--muted); }
+
+.prd-badge {
+  background: color-mix(in srgb, var(--card2) 80%, transparent);
+  border: 1px solid var(--border);
   color: var(--muted);
+  border-radius: 999px;
+  font-weight: 600;
+  padding: 8px 12px;
+  text-transform: lowercase;
+  letter-spacing: 0.2px;
 }
 
 .prd-btn {
   border-color: var(--border) !important;
   color: var(--text) !important;
-  background: color-mix(in srgb, var(--card2) 65%, transparent) !important;
+  background: color-mix(in srgb, var(--card2) 70%, transparent) !important;
 }
 .prd-btn:hover {
   border-color: color-mix(in srgb, var(--accent) 40%, var(--border)) !important;
 }
 
-/* =========
-   CARDS
-   ========= */
+.prd-theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--card2) 70%, transparent);
+  color: var(--text);
+  padding: 7px 12px;
+}
+.prd-theme-toggle:hover {
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
+}
+.prd-theme-toggle .icon {
+  font-size: 14px;
+  width: 18px;
+  text-align: center;
+  opacity: 0.95;
+}
+.prd-theme-toggle .txt {
+  color: var(--muted);
+  font-weight: 600;
+}
+.prd-theme-toggle .name {
+  font-weight: 900;
+  color: var(--accent2);
+}
+
 .card-like {
   background: var(--card);
   border: 1px solid var(--border);
@@ -138,26 +164,21 @@ html[data-theme="radiant"] {
   border: 1px solid var(--border);
   border-radius: 16px;
   padding: 10px 12px;
-  min-width: 180px;
+  min-width: 190px;
 }
-
 .pill-k {
   font-size: 12px;
   letter-spacing: 1px;
   color: var(--muted);
   text-transform: uppercase;
 }
-
 .pill-v {
   font-size: 20px;
-  font-weight: 800;
+  font-weight: 900;
   color: var(--text);
   margin-top: 2px;
 }
 
-/* =========
-   INPUTS / TABLES
-   ========= */
 .prd-input {
   background: color-mix(in srgb, var(--card2) 70%, transparent) !important;
   border: 1px solid var(--border) !important;
@@ -168,34 +189,13 @@ html[data-theme="radiant"] {
   border-color: color-mix(in srgb, var(--accent) 40%, var(--border)) !important;
 }
 
-.prd-table {
-  color: var(--text);
-}
-.prd-table thead th {
-  color: var(--muted);
-  border-bottom-color: var(--border) !important;
-}
-.prd-table tbody td {
-  border-top-color: color-mix(in srgb, var(--border) 75%, transparent) !important;
-}
-
-/* =========
-   CHART WRAPS
-   ========= */
-.chart-wrap {
-  height: 360px;
-}
-.chart-wrap-sm {
-  height: 260px;
-}
+.chart-wrap { height: 360px; }
+.chart-wrap-sm { height: 260px; }
 @media (max-width: 576px) {
   .chart-wrap { height: 280px; }
   .chart-wrap-sm { height: 220px; }
 }
 
-/* =========
-   PRESET CARDS
-   ========= */
 .preset {
   background: var(--card2);
   border: 1px solid var(--border);
@@ -203,19 +203,19 @@ html[data-theme="radiant"] {
   padding: 12px;
   cursor: pointer;
   height: 100%;
-  transition: transform 120ms ease, border-color 120ms ease, background 120ms ease;
+  transition: transform 120ms ease, border-color 120ms ease;
 }
 .preset:hover {
   transform: translateY(-2px);
   border-color: color-mix(in srgb, var(--accent) 35%, var(--border));
 }
 .preset .name {
-  font-weight: 700;
+  font-weight: 800;
   font-size: 13px;
   line-height: 1.15rem;
 }
 .preset .chance {
-  font-weight: 900;
+  font-weight: 950;
   color: var(--accent2);
 }
 .preset .meta {
@@ -223,9 +223,6 @@ html[data-theme="radiant"] {
   font-size: 12px;
 }
 
-/* =========
-   STATS
-   ========= */
 .statbox {
   background: var(--card2);
   border: 1px solid var(--border);
@@ -234,4 +231,51 @@ html[data-theme="radiant"] {
   height: 100%;
 }
 .statbox .k { color: var(--muted); font-size: 12px; }
-.statbox .v { font-size: 22px; font-weight: 850; margin-top: 2px; }
+.statbox .v { font-size: 22px; font-weight: 900; margin-top: 2px; }
+
+.prd-table { color: var(--text); }
+.prd-table thead th {
+  color: var(--muted);
+  border-bottom-color: var(--border) !important;
+}
+.prd-table tbody td {
+  border-top-color: color-mix(in srgb, var(--border) 75%, transparent) !important;
+}
+
+/* Offcanvas */
+.prd-offcanvas {
+  background: var(--card2) !important;
+  color: var(--text) !important;
+  border-left: 1px solid var(--border);
+}
+.prd-close {
+  filter: invert(1);
+}
+html[data-theme="radiant"] .prd-close {
+  filter: invert(0);
+}
+
+.formula-box {
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--border));
+  background: color-mix(in srgb, var(--card) 55%, transparent);
+  border-radius: 16px;
+  padding: 12px 14px;
+}
+
+.prd-qmark {
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  padding: 0;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--card2) 70%, transparent);
+  color: var(--muted);
+}
+.prd-qmark:hover {
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
+  color: var(--text);
+}
