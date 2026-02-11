@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="en" data-theme="dire">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+  <title>PRD Lab — Pseudo-Random Distribution Explorer (Radiant/Dire)</title>
+  <meta name="description" content="Interactive Pseudo-Random Distribution (PRD) playground and Dota-style proc chance calculator. Compare PRD vs true RNG. Radiant/Dire theme switch.">
+  <meta name="keywords" content="pseudo-random distribution, PRD, rng, proc chance, probability, dota-style PRD, game mechanics, statistics, visualization">
+  <meta name="author" content="NISHANTH MURTHY KOTTAPALLI">
+  <link rel="canonical" href="https://nishanth-murthy-kottapalli.github.io/pseudo-random-distribution-lab/">
+
+  <!-- OpenGraph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="PRD Lab — Pseudo-Random Distribution Explorer">
+  <meta property="og:description" content="Interactive PRD playground + Dota-style proc chance calculator. Compare PRD vs true RNG. Radiant/Dire theme switch.">
+  <meta property="og:url" content="https://nishanth-murthy-kottapalli.github.io/pseudo-random-distribution-lab/">
+  <meta property="og:image" content="https://nishanth-murthy-kottapalli.github.io/pseudo-random-distribution-lab/og.png">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="PRD Lab — Pseudo-Random Distribution Explorer">
+  <meta name="twitter:description" content="Interactive PRD playground + Dota-style proc chance calculator. Radiant/Dire theme switch.">
+  <meta name="twitter:image" content="https://nishanth-murthy-kottapalli.github.io/pseudo-random-distribution-lab/og.png">
+
+  <!-- JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "PRD Lab",
+    "applicationCategory": "EducationalApplication",
+    "operatingSystem": "Web",
+    "description": "Interactive Pseudo-Random Distribution (PRD) playground and Dota-style proc chance calculator. Compare PRD vs true RNG with Radiant/Dire themes.",
+    "author": {
+      "@type": "Person",
+      "name": "NISHANTH MURTHY KOTTAPALLI"
+    },
+    "url": "https://nishanth-murthy-kottapalli.github.io/pseudo-random-distribution-lab/"
+  }
+  </script>
+
+  <!-- Bootstrap 5 -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+
+<body class="prd-body">
+  <header class="container py-4">
+    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+      <div>
+        <div class="d-flex align-items-center gap-3 flex-wrap">
+          <a href="#calculator" class="navlink" id="navCalc">Calculator</a>
+          <a href="#learn" class="navlink" id="navLearn">Learn / Playground</a>
+        </div>
+        <h1 class="mt-3 mb-1 prd-title">PRD Lab</h1>
+        <p class="mb-0 prd-subtitle">Pseudo-Random Distribution explorer with Radiant/Dire themes</p>
+      </div>
+
+      <div class="d-flex align-items-center gap-2">
+        <button class="btn btn-sm btn-outline-secondary prd-btn" id="themeToggle" type="button">
+          Theme: <span id="themeLabel">Dire</span>
+        </button>
+        <a class="btn btn-sm btn-outline-secondary prd-btn" href="https://github.com/NISHANTH-MURTHY-KOTTAPALLI" target="_blank" rel="noopener">
+          GitHub
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- CALCULATOR -->
+  <main class="container pb-5" id="viewCalculator">
+    <section class="card-like p-3 p-md-4 mb-4">
+      <div class="d-flex flex-column flex-lg-row gap-3 align-items-lg-center justify-content-between">
+        <div>
+          <h2 class="h5 mb-1">Dota-style PRD Calculator</h2>
+          <div class="small muted">
+            Dota-style PRD ramps per-attempt chance as <span class="mono">P(N)=min(1, C×N)</span>.
+            C is solved so the long-run average proc rate matches the nominal chance.
+          </div>
+        </div>
+
+        <div class="d-flex gap-2 flex-wrap">
+          <div class="pill">
+            <div class="pill-k">Proc chance</div>
+            <div class="d-flex align-items-center gap-2 mt-1">
+              <input id="pInput" type="number" class="form-control form-control-sm prd-input text-center" min="1" max="95" step="0.01" value="17" style="width: 100px;">
+              <span class="muted fw-semibold">%</span>
+            </div>
+          </div>
+
+          <div class="pill">
+            <div class="pill-k">Derived C</div>
+            <div class="pill-v"><span id="cValue">—</span><span class="muted ms-1">%</span></div>
+            <div class="small muted">step constant</div>
+          </div>
+
+          <div class="pill">
+            <div class="pill-k">Compare</div>
+            <select id="mode" class="form-select form-select-sm prd-input mt-1">
+              <option value="prd">PRD only</option>
+              <option value="both">PRD + True RNG</option>
+              <option value="tr">True RNG only</option>
+            </select>
+          </div>
+
+          <div class="pill">
+            <div class="pill-k">Chart</div>
+            <select id="chartType" class="form-select form-select-sm prd-input mt-1">
+              <option value="chance">Per-attempt chance</option>
+              <option value="pmf">Proc on attempt N (PMF)</option>
+              <option value="cdf">Proc by attempt N (CDF)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-3">
+        <label class="form-label small muted mb-1">Attempts shown (N)</label>
+        <input id="nMax" type="range" class="form-range" min="10" max="80" step="1" value="30">
+        <div class="small muted">N = <span id="nMaxLabel">30</span></div>
+      </div>
+    </section>
+
+    <section class="card-like p-3 p-md-4 mb-4">
+      <div class="chart-wrap">
+        <canvas id="mainChart"></canvas>
+      </div>
+
+      <div class="row g-3 mt-2">
+        <div class="col-12 col-md-6 col-lg-3">
+          <div class="statbox">
+            <div class="k">E[attempts]</div>
+            <div class="v" id="statMean">—</div>
+          </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-3">
+          <div class="statbox">
+            <div class="k">Median attempt</div>
+            <div class="v" id="statMedian">—</div>
+          </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-3">
+          <div class="statbox">
+            <div class="k">P(proc ≤ 5)</div>
+            <div class="v" id="statP5">—</div>
+          </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-3">
+          <div class="statbox">
+            <div class="k">P(proc ≤ 10)</div>
+            <div class="v" id="statP10">—</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="mb-4">
+      <div class="section-title">Dota-flavored presets (Spells)</div>
+      <div class="row g-3" id="spellsGrid"></div>
+    </section>
+
+    <section class="mb-5">
+      <div class="section-title">Dota-flavored presets (Items)</div>
+      <div class="row g-3" id="itemsGrid"></div>
+    </section>
+
+    <div class="small muted">
+      Educational note: this site demonstrates a common Dota-style PRD model (<span class="mono">P(N)=C×N</span> capped at 100%).
+      Exact in-game mechanics may vary by ability/item and patch.
+    </div>
+  </main>
+
+  <!-- LEARN / PLAYGROUND -->
+  <main class="container pb-5 d-none" id="viewLearn">
+    <section class="card-like p-3 p-md-4 mb-4">
+      <h2 class="h5 mb-2">Learn: What PRD is and why it exists</h2>
+
+      <p class="muted mb-2">
+        In games, “proc chance” effects can feel unfair with pure RNG: long dry streaks or unlikely back-to-back chains.
+        Pseudo-Random Distribution (PRD) changes the *feel* by adjusting the chance based on prior failures.
+      </p>
+
+      <div class="row g-3 mt-2">
+        <div class="col-12 col-lg-6">
+          <div class="info-card p-3 h-100">
+            <div class="fw-semibold">True RNG (independent rolls)</div>
+            <div class="small muted mt-1">
+              Every attempt has the same probability <span class="mono">p</span>, regardless of what happened before.
+              This is mathematically clean, but can produce streaks.
+            </div>
+            <div class="small muted mt-2">
+              Proc-on-attempt-N: <span class="mono">q(N) = (1-p)^(N-1) × p</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-lg-6">
+          <div class="info-card p-3 h-100">
+            <div class="fw-semibold">PRD (adaptive chance)</div>
+            <div class="small muted mt-1">
+              The chance increases after each miss. When a proc happens, it resets.
+              This reduces dry streaks and also reduces extreme lucky chains.
+            </div>
+            <div class="small muted mt-2">
+              Dota-style: <span class="mono">P(N) = min(1, C×N)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card-like p-3 p-md-4 mb-4">
+      <h2 class="h5 mb-3">Interactive step table (Dota-style PRD)</h2>
+
+      <div class="row g-3 align-items-start">
+        <div class="col-12 col-lg-4">
+          <label class="form-label small muted mb-1">Nominal proc chance (p)</label>
+          <div class="input-group">
+            <input id="learnP" type="number" class="form-control prd-input text-center" min="1" max="95" step="0.01" value="25">
+            <span class="input-group-text prd-input">%</span>
+          </div>
+
+          <div class="mt-3 info-card p-3">
+            <div class="small muted">Derived C</div>
+            <div class="display-6 mb-0"><span id="learnC">—</span><span class="muted ms-2 fs-5">%</span></div>
+            <div class="small muted">
+              Your first attempt is often lower than p; repeated misses climb until it becomes likely (or guaranteed).
+            </div>
+          </div>
+
+          <div class="mt-3 info-card p-3">
+            <div class="small muted">What the table shows</div>
+            <ul class="small muted mb-0">
+              <li><span class="mono">P(N)</span>: chance on attempt N</li>
+              <li><span class="mono">q(N)</span>: proc exactly on N</li>
+              <li><span class="mono">F(N)</span>: proc by N</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-8">
+          <div class="table-responsive">
+            <table class="table table-sm table-hover align-middle prd-table mb-0">
+              <thead>
+                <tr>
+                  <th>Attempt</th>
+                  <th>P(N)</th>
+                  <th>Proc exactly on N</th>
+                  <th>Proc by N</th>
+                </tr>
+              </thead>
+              <tbody id="learnTable"></tbody>
+            </table>
+          </div>
+          <div class="small muted mt-2">
+            Under the hood: <span class="mono">q(N) = Π(1−P(i)) × P(N)</span> for i=1..N−1.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card-like p-3 p-md-4 mb-4">
+      <h2 class="h5 mb-3">General PRD playground (explore different ramp shapes)</h2>
+
+      <div class="row g-3">
+        <div class="col-12 col-lg-4">
+          <label class="form-label small muted mb-1">Model</label>
+          <select id="pgModel" class="form-select prd-input">
+            <option value="dota">Dota-style linear (C×N)</option>
+            <option value="linear">Linear ramp (c0 + inc×(N−1))</option>
+            <option value="exp">Exponential approach (1−e^(−kN))</option>
+          </select>
+
+          <div class="mt-3">
+            <label class="form-label small muted mb-1">Nominal chance (p)</label>
+            <div class="input-group">
+              <input id="pgP" type="number" class="form-control prd-input text-center" min="1" max="95" step="0.01" value="25">
+              <span class="input-group-text prd-input">%</span>
+            </div>
+          </div>
+
+          <div class="mt-3 d-none" id="pgLinearBox">
+            <label class="form-label small muted mb-1">c0 (start %)</label>
+            <input id="pgC0" type="range" class="form-range" min="0" max="50" value="5">
+            <div class="small muted">c0 = <span id="pgC0Label">5</span>%</div>
+
+            <label class="form-label small muted mb-1 mt-2">inc (step % per miss)</label>
+            <input id="pgInc" type="range" class="form-range" min="0" max="30" value="5">
+            <div class="small muted">inc = <span id="pgIncLabel">5</span>%</div>
+          </div>
+
+          <div class="mt-3 d-none" id="pgExpBox">
+            <label class="form-label small muted mb-1">k (aggressiveness)</label>
+            <input id="pgK" type="range" class="form-range" min="0.05" max="1.5" step="0.01" value="0.25">
+            <div class="small muted">k = <span id="pgKLabel">0.25</span></div>
+          </div>
+
+          <div class="mt-3 info-card p-3">
+            <div class="small muted">Effective parameters</div>
+            <div class="mono" id="pgParamOut">—</div>
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-8">
+          <div class="card-like p-3">
+            <div class="small muted mb-2">Per-attempt chance preview (first 30 attempts)</div>
+            <div class="chart-wrap-sm">
+              <canvas id="pgChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card-like p-3 p-md-4">
+      <h2 class="h5 mb-2">Back to calculator</h2>
+      <p class="muted mb-3">
+        Try presets and compare PRD vs true RNG using the chart type toggles (chance, PMF, CDF).
+      </p>
+      <a href="#calculator" class="btn btn-success">Open Calculator</a>
+    </section>
+  </main>
+
+  <footer class="container pb-4">
+    <div class="small muted mt-4">
+      © 2024–2026 NISHANTH MURTHY KOTTAPALLI • PRD Lab • Reference-only proprietary license
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script src="./presets.js"></script>
+  <script src="./prd.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
