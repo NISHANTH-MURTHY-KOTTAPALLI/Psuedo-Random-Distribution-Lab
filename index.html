@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
 
   <title>PRD Lab — Pseudo-Random Distribution Explorer</title>
-  <meta name="description" content="Interactive Pseudo-Random Distribution (PRD) playground and Dota 2 style proc chance calculator. Compare PRD vs true RNG." />
-  <meta name="keywords" content="pseudo-random distribution, PRD, RNG, proc chance, probability, game mechanics, dota2-style PRD, statistics, visualization, educational tool" />
+  <meta name="description" content="Interactive Pseudo-Random Distribution (PRD) playground and Dota 2 chance calculator. Compare PRD vs true RNG." />
+  <meta name="keywords" content="pseudo-random distribution, PRD, RNG, proc chance, probability, game mechanics, dota2 PRD, statistics, visualization, educational tool" />
   <meta name="author" content="NISHANTH MURTHY KOTTAPALLI" />
 
   <!-- IMPORTANT: match your actual GitHub Pages URL -->
@@ -15,7 +15,7 @@
   <!-- OpenGraph -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="PRD Lab — Pseudo-Random Distribution Explorer" />
-  <meta property="og:description" content="Interactive PRD playground + Dota2 style proc chance calculator." />
+  <meta property="og:description" content="Interactive PRD playground + Dota2 proc chance calculator." />
   <meta property="og:url" content="https://nishanth-murthy-kottapalli.github.io/Psuedo-Random-Distribution-Lab/" />
   <!-- Use og.png if you add it later; og.svg works as a solid fallback -->
   <meta property="og:image" content="https://nishanth-murthy-kottapalli.github.io/Psuedo-Random-Distribution-Lab/og.svg" />
@@ -23,7 +23,7 @@
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="PRD Lab — Pseudo-Random Distribution Explorer" />
-  <meta name="twitter:description" content="Interactive PRD playground + Dota2 style proc chance calculator." />
+  <meta name="twitter:description" content="Interactive PRD playground + Dota2 proc chance calculator." />
   <meta name="twitter:image" content="https://nishanth-murthy-kottapalli.github.io/Psuedo-Random-Distribution-Lab/og.svg" />
 
   <!-- JSON-LD -->
@@ -34,7 +34,7 @@
     "name": "PRD Lab",
     "applicationCategory": "EducationalApplication",
     "operatingSystem": "Web",
-    "description": "Interactive Pseudo-Random Distribution (PRD) playground and Dota2 style proc chance calculator. Compare PRD vs true RNG.",
+    "description": "Interactive Pseudo-Random Distribution (PRD) playground and Dota2 chance calculator. Compare PRD vs true RNG.",
     "author": { "@type": "Person", "name": "NISHANTH MURTHY KOTTAPALLI" },
     "url": "https://nishanth-murthy-kottapalli.github.io/Psuedo-Random-Distribution-Lab/"
   }
@@ -95,7 +95,7 @@
         <div>
           <h2 class="h5 mb-1">Dota2 PRD Calculator</h2>
           <div class="small muted">
-            Dota-style PRD ramps per-attempt chance as <span class="mono">P(N)=min(1, C×N)</span>.
+            Dota2 PRD ramps per-attempt chance as <span class="mono">P(N)=min(1, C×N)</span>.
             C is solved so the long-run average proc rate matches the nominal chance.
           </div>
         </div>
@@ -196,7 +196,7 @@
     </section>
 
     <div class="small muted">
-      Educational note: this demonstrates a common Dota-style PRD model (<span class="mono">P(N)=C×N</span> capped at 100%).
+      Educational note: this demonstrates a common Dota2 PRD model (<span class="mono">P(N)=C×N</span> capped at 100%).
       Exact in-game behavior may vary by patch or ability/item.
     </div>
   </main>
@@ -251,7 +251,7 @@
     </section>
 
     <section class="card-like p-3 p-md-4 mb-4">
-      <h2 class="h5 mb-3">Interactive step table (Dota-style PRD)</h2>
+      <h2 class="h5 mb-3">Interactive step table (Dota2 PRD)</h2>
 
       <div class="row g-3 align-items-start">
         <div class="col-12 col-lg-4">
@@ -365,13 +365,13 @@
   <!-- C explainer offcanvas -->
   <div class="offcanvas offcanvas-end prd-offcanvas" tabindex="-1" id="cExplainer" aria-labelledby="cExplainerLabel">
     <div class="offcanvas-header">
-      <h5 class="offcanvas-title" id="cExplainerLabel">What is C in Dota-style PRD?</h5>
+      <h5 class="offcanvas-title" id="cExplainerLabel">What is C in Dota2 PRD?</h5>
       <button type="button" class="btn-close prd-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
       <div class="small muted">
         <p class="mb-2">
-          In Dota-style PRD, your chance on attempt <span class="mono">N</span> (since the last proc) is:
+          In Dota2 PRD, your chance on attempt <span class="mono">N</span> (since the last proc) is:
         </p>
         <div class="formula-box mb-3">
           <div class="mono fw-bold fs-5">P(N) = min(1, C × N)</div>
@@ -401,8 +401,8 @@
         <div class="mt-3 info-card p-3">
           <div class="fw-semibold mb-1">Practical intuition</div>
           <div>
-            PRD reduces “no proc forever” streaks by increasing chance after misses.
-            It also reduces “proc 3 times in a row” chains by starting lower after a proc.
+            PRD reduces "no proc forever" streaks by increasing chance after misses.
+            It also reduces "proc 3 times in a row" chains by starting lower after a proc.
           </div>
         </div>
       </div>
