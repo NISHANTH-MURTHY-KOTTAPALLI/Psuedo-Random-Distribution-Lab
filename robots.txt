@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://nishanth-murthy-kottapalli.github.io/pseudo-random-distribution-lab/sitemap.xml
