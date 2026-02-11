@@ -243,7 +243,7 @@
               The chance increases after each miss and resets on proc. This compresses the distribution of “time-to-proc”.
             </div>
             <div class="small muted mt-2">
-              Dota-style: <span class="mono">P(N) = min(1, C×N)</span>
+              Dota2: <span class="mono">P(N) = min(1, C×N)</span>
             </div>
           </div>
         </div>
@@ -307,7 +307,7 @@
         <div class="col-12 col-lg-4">
           <label class="form-label small muted mb-1">Model</label>
           <select id="pgModel" class="form-select prd-input">
-            <option value="dota">Dota-style linear (C×N)</option>
+            <option value="dota">Dota2 linear (C×N)</option>
             <option value="linear">Linear ramp (c0 + inc×(N−1))</option>
             <option value="exp">Exponential approach (1−e^(−kN))</option>
           </select>

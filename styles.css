@@ -233,7 +233,29 @@ html[data-theme="radiant"] {
 .statbox .k { color: var(--muted); font-size: 12px; }
 .statbox .v { font-size: 22px; font-weight: 900; margin-top: 2px; }
 
-.prd-table { color: var(--text); }
+.prd-table {
+  color: var(--text);
+
+  /* Bootstrap tables default to a white background.
+     Use variables so Dire (dark) and Radiant (light) stay themed. */
+  --bs-table-bg: transparent;
+  --bs-table-color: var(--text);
+  --bs-table-border-color: var(--border);
+  --bs-table-striped-bg: color-mix(in srgb, var(--card2) 62%, transparent);
+  --bs-table-striped-color: var(--text);
+  --bs-table-hover-bg: color-mix(in srgb, var(--accent) 10%, var(--card2));
+  --bs-table-hover-color: var(--text);
+}
+
+.prd-table th,
+.prd-table td {
+  background-color: transparent !important;
+}
+
+/* Keep the responsive wrapper from creating a white panel on some browsers */
+.table-responsive {
+  background: transparent;
+}
 .prd-table thead th {
   color: var(--muted);
   border-bottom-color: var(--border) !important;

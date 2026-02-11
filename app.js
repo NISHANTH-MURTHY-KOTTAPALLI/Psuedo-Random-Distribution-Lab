@@ -332,7 +332,7 @@
     if (model === "dota") {
       const C = PRD.solveCForNominalP(p);
       fn = (n) => PRD.chanceDota(C, n);
-      label = "Dota-style linear";
+      label = "Dota2 linear";
       paramOut = `C = ${(100 * C).toFixed(3)}% (solved)`;
     } else if (model === "linear") {
       fn = (n) => PRD.chanceLinear(c0, inc, n);
