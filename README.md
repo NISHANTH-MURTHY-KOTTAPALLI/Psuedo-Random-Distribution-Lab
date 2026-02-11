@@ -5,7 +5,7 @@
 Pseudo-Random Distribution Lab is a **static, mobile-friendly** educational site that helps you understand **Pseudo-Random Distribution (PRD)** and compare it against **True RNG**.
 
 It includes:
-- **Dota-style PRD calculator** (P(N) = min(1, C×N), with C solved to match the nominal proc chance)
+- **Dota2 PRD calculator** (P(N) = min(1, C×N), with C solved to match the nominal proc chance)
 - **Chart views**: per-attempt chance, PMF (proc on attempt N), CDF (proc by attempt N)
 - **Radiant/Dire theme switch**
 - **General PRD playground** (try different ramp shapes: Dota-linear, linear c0+inc, exponential)
