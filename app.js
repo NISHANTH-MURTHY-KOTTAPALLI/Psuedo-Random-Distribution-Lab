@@ -14,6 +14,10 @@
 
   let mainChart, pgChart;
 
+  function cssVar(name){
+    return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  }
+
   function themeInit(){
     const saved = localStorage.getItem("prd_theme");
     const theme = saved || "dire";
@@ -27,10 +31,14 @@
 
   function setTheme(theme, persist){
     document.documentElement.setAttribute("data-theme", theme);
-    el("themeLabel").textContent = theme === "radiant" ? "Radiant" : "Dire";
+
+    const isRadiant = theme === "radiant";
+    el("themeLabel").textContent = isRadiant ? "Radiant" : "Dire";
+    el("themeIcon").textContent = isRadiant ? "☀" : "☾";
+
     if (persist) localStorage.setItem("prd_theme", theme);
 
-    // update charts to reflect axis label colors (Chart.js reads computed styles only once)
+    // Rebuild charts so axes/grid/legend colors match theme tokens
     rebuildCharts();
   }
 
@@ -55,10 +63,6 @@
     } else {
       recomputeMain();
     }
-  }
-
-  function cssVar(name){
-    return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
   }
 
   function makeChart(ctx, type){
@@ -97,12 +101,18 @@
   }
 
   function rebuildCharts(){
+    // Chart instances might not exist yet during initial theme set
     if (mainChart) mainChart.destroy();
     if (pgChart) pgChart.destroy();
 
-    mainChart = makeChart(el("mainChart"), "bar");
-    pgChart = makeChart(el("pgChart"), "line");
+    const main = el("mainChart");
+    const pg = el("pgChart");
+    if (!main || !pg) return;
 
+    mainChart = makeChart(main, "bar");
+    pgChart = makeChart(pg, "line");
+
+    // Recompute after rebuild
     recomputeMain();
     recomputePlayground();
   }
@@ -146,8 +156,8 @@
           </div>
           <div class="meta mt-1">${p.meta || ""}</div>
           <div class="mt-2">
-            <div class="progress" style="height: 8px; background: rgba(127,127,127,0.15);">
-              <div class="progress-bar" style="width:${Math.min(100, p.chance)}%; background:${cssVar("--accent2")}"></div>
+            <div class="progress" style="height: 8px; background: rgba(127,127,127,0.15); border-radius: 999px;">
+              <div class="progress-bar" style="width:${Math.min(100, p.chance)}%; background:${cssVar("--accent2")}; border-radius: 999px;"></div>
             </div>
           </div>
         </div>
@@ -162,7 +172,7 @@
       if (!node) return;
       const chance = Number(node.getAttribute("data-chance"));
       el("pInput").value = String(chance);
-      state.p = clamp(chance, 1, 95)/100;
+      state.p = clamp(chance, 1, 95) / 100;
       window.scrollTo({ top: 0, behavior: "smooth" });
       recomputeMain();
     }
@@ -311,14 +321,14 @@
   function main(){
     themeInit();
 
-    // init charts (first time)
+    // Initialize charts once DOM is ready
     mainChart = makeChart(el("mainChart"), "bar");
     pgChart = makeChart(el("pgChart"), "line");
 
-    // initial labels
+    // initial labels/state
     el("nMaxLabel").textContent = el("nMax").value;
     state.nMax = Number(el("nMax").value);
-    state.p = clamp(Number(el("pInput").value), 1, 95)/100;
+    state.p = clamp(Number(el("pInput").value), 1, 95) / 100;
 
     bindCalculator();
     bindLearn();
